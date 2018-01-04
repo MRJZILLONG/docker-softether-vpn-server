@@ -4,7 +4,7 @@ LABEL maintainer="Antoine Mary <antoinee.mary@gmail.com>" \
 
 ### SET ENVIRONNEMENT
 ENV LANG="en_US.UTF-8" \
-    SOFTETHER_VERSION="v4.22-9634-beta"
+    SOFTETHER_VERSION="v4.24-9651-beta"
 
 ### SETUP
 COPY assets /assets
@@ -24,8 +24,7 @@ RUN set -ex ; \
     make ; make install ; make clean ; \
     # Striping vpnserver
     strip /usr/vpnserver/vpnserver ; \
-    mkdir -p /etc/vpnserver /var/log/vpnserver; ln -s /etc/vpnserver/vpn_server.config /usr/vpnserver/vpn_server.config ; \
-
+ 
     # Cleanning
     apk del .build-deps ; \
     # Reintroduce necessary libraries
@@ -35,9 +34,7 @@ RUN set -ex ; \
     cd .. ; rm -rf /usr/vpnbridge /usr/bin/vpnbridge /usr/vpnclient /usr/bin/vpnclient /usr/vpncmd /usr/bin/vpncmd /usr/bin/vpnserver \
       /assets SoftEtherVPN-${SOFTETHER_VERSION:1} ;
 
-EXPOSE 443/tcp 992/tcp 1194/udp 5555/tcp
-
-VOLUME ["/etc/vpnserver", "/var/log/vpnserver"]
+EXPOSE 443/tcp
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/vpnserver/vpnserver", "execsvc"]
